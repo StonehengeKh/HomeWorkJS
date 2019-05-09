@@ -16,8 +16,7 @@
         <!--Объедините все элементы массива letters в одну строку и выведите ее в консоль-->
         <pre>
             <code>
-                function firstHomeWork () {
-                    var str = "Backend As A Service";
+                function firstHomeWork (str) {
                     var letters = [];
                     letters.push( str.match(/\b(\w)/g ) );
                     console.log(letters);
@@ -26,7 +25,7 @@
                     return letterFirst;
                 }
 
-                firstHomeWork()
+                firstHomeWork("Backend As A Service")
             </code>
         </pre>
         <h4>Задание 2</h4>
@@ -39,7 +38,7 @@
                 function secondHomeWork (dates) {
                     var newDate = dates;
                     if (typeof (newDate) === "number") {
-                        return new Date()
+                        return new Date().toLocaleString()
                     } else {
                         return "Неверный тип данных"
                         }
