@@ -145,7 +145,7 @@
                             postId === comments[x].postId ? res.push({
                                 name: users[comments[x].author].name,
                                 text: comments[x].text
-                            }) : console.log("Комментариев нет")
+                            }) : null
                         }
                         return res
                     }
