@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hw-05</title>
+</head>
+<body>
+    <header>
+        <h2>Makarenko Aleksandr</h2>
+        <h3>Home work 05</h3>
+    </header>
+    <main>
+        <section>
+            <h4>Задание 1</h4>
+            <h5>Обязательная часть ( 3 балла )</h5>
+            <p>Напилить код функции modificator, такой, чтобы в результате работы кода: в консоли было: sampleFunc: test | sample</p>
+            <pre>
+                <code>
+                    function sampleFunc () {
+                        console.log ( `${arguments.callee.name}: ${arguments[0]} | ${arguments[1]}` )
+                    }
+
+                    function modificator ( func ) {
+                        return func.bind ( null, "test", "sample" )
+                    }
+
+                    testFunc = modificator( sampleFunc )
+
+                    testFunc()
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 2</h4>
+            <h5>Дополнительно ( 4 балла )</h5>
+            <p>Напилить код функции modificator, такой, чтобы в результате работы кода: в консоль было выведено число символов в коде функции sampleFunc, т.е.: Symbols in my code: 93 </p>
+            <pre>
+                <code>
+                    function sampleFunc () {
+                        console.info ( `Symbols in my code: ${arguments.callee + 0}` )
+                    }
+
+                    function modificator ( func ) {
+                        func.valueOf = function () {
+                            return func.toString().length
+                        }
+                    }
+
+                    modificator( sampleFunc )
+
+                    sampleFunc()
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 3</h4>
+            <h5>Дополнительно ( 5 баллов )</h5>
+            <p>Напилите код функции generateError, такой, чтобы в результате работы кода: в консоли было сообщение от ошибке: Application: Invalid arguments
+                Function needs 3 arguments, but only 1 present</p>
+            <pre>
+                <code>
+                    function testArguments () {
+                        function generateError ( numArgs ) {
+                            var err = new Error("Invalid arguments");
+                            err.name = "Application";
+                            err.stack = `Function needs 3 arguments, but only ${arguments.length} present`;
+                            throw err
+                        }
+                        try {
+                            arguments.length >= 3 ? null : generateError ( arguments.length )
+                        }
+                        catch ( err ) {
+                            console.error ( `${err.name}: ${err.message}\n${err.stack}` )
+                        }
+                    }
+
+                    testArguments ( "Google" )
+                </code>
+            </pre>
+        </section>
+    </main>
+</body>
+</html>
