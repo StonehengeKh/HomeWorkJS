@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hw-06</title>
+</head>
+<body>
+    <header>
+        <h2>Makarenko Aleksandr</h2>
+        <h3>Home work 06</h3>
+    </header>
+    <main>
+        <section>
+            <h4>Задание 1</h4>
+            <h5>Обязательная часть ( 3 балла )</h5>
+            <p>Создайте массив tags с именами валидных тегов HTML5
+
+                Теперь создайте массив classes с именами классов
+
+                ( число элементов в массиве classes должно быть не меньше, чем число элементов массива tags )
+
+                Создайте элемент style и вставьте его в head документа
+
+                Добавьте контент элемента style с описанием классов, имена которых находятся в массиве classes
+
+                Итерируйте массив tags, создавая соответствующие элементы и вставляя их на страницу, добавляя каждому элементу класс из массива classes
+
+            </p>
+            <pre>
+                <code>
+                    var tags = ["h1", "h2", "h3", "h4", "h5"];
+                    var classes = ["name_1", "name_2", "name_3", "name_4", "name_5" ];
+                    var style = document.createElement('style');
+
+                    document.head.appendChild(style);
+
+                    style.appendChild(document.createTextNode(`
+                        .name_1 {
+                            background-color: blue;
+                            color: white;
+                        }
+                        .name_2 {
+                            background-color: yellow;
+                        }
+                        .name_3 {
+                            background-color: green;
+                            color: white;
+                        }
+                        .name_4 {
+                            background-color: black;
+                            color: white;
+                        }
+                        .name_5 {
+                            background-color: red;
+                        }
+                    `))
+
+                    function addElement ( ) {
+                        for ( var tag in tags ) {
+                            document.body.appendChild (document.createElement ( tags[tag] ))
+                            document.body.children[tag].className = classes[tag]
+                            document.getElementsByTagName( tags[tag] )[0].innerHTML = "Name"
+                        }
+                    }
+                    addElement()
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 2</h4>
+            <h5>Дополнительно ( 4 балла )</h5>
+            <p>Результат должен быть аналогичен тому, что получится в предыдущем упражнении
+
+                Однако исходный массив tags должен быть массивом объектов, каждый из которых содержит не только имя тега элемента, но и его атрибуты, а так же хотя бы один обработчик события
+
+                Таким образом, массив classes нам уже не нужен, но кроме стилизации элементов нужно еще добавить их контент, используя как атрибуты тегов, так и свойства элементов DOM</p>
+            <pre>
+                <code>
+                    var tags = [
+                        {
+                            name: "h1",
+                            text: "Hello h1",
+                            attrs: {
+                                className: "title1"
+                            },
+                            onclick: clickMouse
+                        },
+                        {
+                            name: "h2",
+                            text: "Hello h2",
+                            attrs: {
+                                className: "title2"
+                            },
+                            onclick: clickMouse
+                        },
+                        {
+                            name: "h3",
+                            text: "Hello h3",
+                            attrs: {
+                                className: "title3"
+                            },
+                            onclick: clickMouse
+                        },
+                        {
+                            name: "h4",
+                            text: "Hello h4",
+                            attrs: {
+                                className: "title4"
+                            },
+                            onclick: clickMouse
+                        },
+                        {
+                            name: "h5",
+                            text: "Hello h5",
+                            attrs: {
+                                className: "title5"
+                            },
+                            onclick: clickMouse
+                        }
+                    ];
+
+                    var style = document.head.appendChild(
+                        document.createElement('style')
+                    )
+
+                    style.textContent = `
+                        h1 {
+                            background-color: blue;
+                            color: white
+                        }
+                        h2 {
+                            background-color: red;
+                            color: grey
+                        }
+                        h3 {
+                            background-color: green;
+                            color: white
+                        }
+                        h4 {
+                            background-color: yellow;
+                            color: grey
+                        }
+                        h5 {
+                            background-color: grey;
+                            color: white
+                        }
+                    `
+
+                    function addElements() {
+                        for (var tag of tags) {
+                            var elem = document.body.appendChild(document.createElement(tag.name))
+                            if (tag.text) elem.innerHTML = tag.text
+                            for (var attr in tag.attrs) elem[attr] = tag.attrs[attr]
+                            elem.onclick = tag.onclick
+                        }
+                    }
+                    addElements()
+
+                    function clickMouse(event){
+                        alert("Clicked")
+                    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 3</h4>
+            <h5>Дополнительно ( 5 баллов )</h5>
+            <p>Напилить код, который выбирает все элементы-потомки body ( :warning: кроме элементов script ) и добавляет им класc: Альтернативный вариант - выбрать все заранее заданные элементы:
+
+                var tags = [ "header", "footer", "main", "div", "p" ]
+                Запустить код в консоли любой страницы
+
+                Подсказка: используйте методы объекта classList</p>
+            <pre>
+                <code>
+                    var tags = [ "header", "footer", "main", "div", "p" ]
+
+                    var style = document.head.appendChild(document.createElement('style'))
+                        style.textContent = `
+                            .redBack {
+                                background-color: red!important;
+                            }
+                        `
+                    function addColor() {
+                        for (var elem of document.body.children)
+                        elem.tagName === 'SCRIPT' ? null : elem.className = 'redBack'
+                    }
+                    addColor()
+                </code>
+            </pre>
+        </section>
+    </main>
+</body>
+</html>
