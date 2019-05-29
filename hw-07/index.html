@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hw-07</title>
+</head>
+<body>
+    <header>
+        <h2>Makarenko Aleksandr</h2>
+        <h3>Home work 07</h3>
+    </header>
+    <main>
+        <section>
+            <h4>Задание 1</h4>
+            <h5>Обязательная часть ( 3 балла )</h5>
+            <p>pure JS
+
+                Создайте элемент 'p', при клике на котором появляется картинка размером 100px
+
+                При наведении указателя мышки на картинку ее размер должен плавно увеличиваться до 200px
+
+                При клике на картинке она должна исчезать</p>
+            <pre>
+                <code>
+                    var elem = document.body.appendChild(document.createElement("p"))
+                    elem.innerHTML = "Click me"
+
+                    elem.addEventListener("click", clickMe)
+
+                    function clickMe(event) {
+                        var cat = document.body.appendChild(document.createElement("img"))
+                        cat.src = "http://cdn.shopify.com/s/files/1/1866/7599/products/GD005-Grey-Cat-Laughing-FLAT_1024x1024.jpg?v=1506040729";
+                        cat.style = "width: 100";
+                        cat.onclick = clickHandler;
+                        cat.onmouseover = over;
+                        cat.onmouseout = out;
+                    }
+
+                    function clickHandler(event) {
+                        event.target.remove()
+                    }
+                    function over(event) {
+                        event.target.style = "width: 200; transition: all 2s ease"
+                    }
+                    function out(event) {
+                        event.target.style = "width: 100; transition: all 1s ease"
+                    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 2</h4>
+            <h5>Дополнительно ( 4 балла )</h5>
+            <p>Создайте коллекцию вложенных друг в друга html-элементов с обработчиками событий click, mouseover, mouseout
+                Установите атрибуты стиля width и height такие, чтобы вложенные элементы были меньше размером, чем родитель
+
+                Установите значение #ff00ff50 атрибута background-color каждому элементу
+
+                Установите значение dotted 1px yellow; атрибута border каждому элементу
+
+                При наступлении события mouseover значение атрибута background-color должно меняться на #ffff0050
+
+                При наступлении события mouseout атрибуту background-color должно устанавливаться исходное значение
+
+                При наступлении события click элемент должен быть удален
+
+                При наведении мышки на элемент должна появляться подсказка с его именем ( "first", "second", "third", "fourth" )</p>
+            <pre>
+                <code>
+                    var collection = []
+
+                    function over(event) {
+                        event.target.style.backgroundColor = '#ffff0050'
+                    }
+                    function out(event) {
+                        event.target.style.backgroundColor = '#ff00ff50'
+                    }
+                    function clickHandler(event) {
+                        event.target.remove()
+                    }
+
+                    for (var item of ["first", "second", "third", "fourth"]) {
+                        var elem = document.createElement('div');
+                        elem.style = `
+                            width:${400 - 50 * collection.length}px;
+                            height:${400 - 50 * collection.length}px;
+                            background-color: #ff00ff50;
+                            border: dotted 1px yellow;
+                        `;
+                        (!collection.length ? document.body :
+                            collection[collection.length - 1]).appendChild(elem);
+                        collection.push(elem);
+                        elem.title = item;
+                        elem.onmouseover = over;
+                        elem.onmouseout = out;
+                        elem.onclick = clickHandler;
+                    }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 3</h4>
+            <h5>Дополнительно ( 5 баллов )</h5>
+            <p>Условия предыдущего задания изменить
+                при удалении элемента его потомки должны оставаться</p>
+            <pre>
+                <code>
+                    var collection = []
+
+                    function over(event) {
+                        event.target.style.backgroundColor = '#ffff0050'
+                    }
+                    function out(event) {
+                        event.target.style.backgroundColor = '#ff00ff50'
+                    }
+                    function clickHandler(event) {
+                        event.stopPropagation()
+                        var elem = event.target
+                        elem.removeEventListener ( "click", clickHandler )
+                        elem.removeEventListener ( "mouseover", over)
+                        elem.removeEventListener ( "mouseout", out)
+                        elem.outerHTML = elem.innerHTML
+                        document.querySelector("div") ?
+                            document.querySelector("div").addEventListener("click", clickHandler) :
+                            null
+                    }
+
+                    for (var item of [1, 2, 3, 4, 5, 6, 7]) {
+                        var elem = document.createElement('div');
+                        elem.style = `
+                            width:${400 - 50 * collection.length}px;
+                            height:${400 - 50 * collection.length}px;
+                            background-color: #ff00ff50;
+                            border: dotted 1px yellow;
+                        `;
+                        (!collection.length ? document.body :
+                            collection[collection.length - 1]).appendChild(elem);
+                        collection.push(elem);
+                        elem.title = item;
+                        elem.addEventListener("click", clickHandler)
+                        elem.addEventListener("mouseover", over)
+                        elem.addEventListener("mouseout", out)
+                    }
+                </code>
+            </pre>
+        </section>
+    </main>
+</body>
+</html>
