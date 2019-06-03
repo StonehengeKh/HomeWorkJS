@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hw-08</title>
+</head>
+<body>
+    <header>
+        <h2>Makarenko Aleksandr</h2>
+        <h3>Home work 08</h3>
+    </header>
+    <main>
+        <section>
+            <h4>Задание 1</h4>
+            <h5>Обязательная часть ( 3 балла )</h5>
+            <p>Напилите код, выводящий на страницу текущее время в течение 100 секунд
+
+                Подсказка: создайте элемент, в котором будет отображаться текущее время
+
+                Контент элемента должен обновляться каждую секунду</p>
+            <pre>
+                <code>
+                    var p = document.body.appendChild(
+                        document.createElement("p")
+                    )
+
+                    var time = 100
+                    function timer() {
+                        if ( !time-- ) return p.remove()
+                        p.innerText = new Date().toLocaleTimeString()
+                        setTimeout ( timer, 1000 )
+                    }
+
+                    timer()
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 2</h4>
+            <h5>Дополнительно ( 4 балла )</h5>
+            <p>Завершите код рекурсивной функции typeMessage так, чтобы при ее вызове на страницу выводился один символ в секунду</p>
+            <pre>
+                <code>
+                    var typeMessage = ( function ( velocity ) {
+                        let container = document.getElementById ( "demo" ) ?
+                            document.getElementById ( "demo" ) :
+                            document.body.appendChild (
+                                document.createElement ( "h3" )
+                            )
+                        container.style = `color: magenta;`
+                        var index = 0
+                        return function ( message ) {
+                            var number = index
+                            setTimeout (
+                                () => container.textContent += message[number],
+                                velocity * number * 1000
+                            )
+                            index++ < message.length - 1 ? arguments.callee ( message ) : null
+                        }
+                    })( 1 )
+
+                    typeMessage ( `Welcome to the hell` )
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 3</h4>
+            <h5>Дополнительно ( 5 баллов )</h5>
+            <p>Нужно сделать так, чтобы у всех экзепляров, созданных конструктором User, был унаследованный метод counter(), который считает созданные конструктором экземпляры
+
+                Каждый вызов конструктора увеличивает счетчик экземпляров на 1 и помещать новое значение счетчика в свойство id созданного экземпляра:</p>
+            <pre>
+                <code>
+                    function User ( name ) {
+                        this.name = name
+                        this.id = this.counter()
+                    }
+
+                    User.prototype.counter = (
+                        function () {
+                            var counter = 0
+                            return function () {
+                                return this.id ? this.id : counter++
+                            }
+                        }
+                    )()
+
+                    var users = [
+                        new User ( "Семен" ),
+                        new User ( "Антон" ),
+                        new User ( "Демьян" ),
+                        new User ( "Василий" )
+                    ]
+
+                    users[1].id = users[1].counter()
+                </code>
+            </pre>
+        </section>
+    </main>
+</body>
+</html>
