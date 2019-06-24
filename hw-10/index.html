@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>hw-10</title>
+</head>
+<body>
+    <header>
+        <h2>Makarenko Aleksandr</h2>
+        <h3>Home work 10</h3>
+    </header>
+    <main>
+        <section>
+            <h4>Задание 1</h4>
+            <h5>Обязательная часть ( 3 балла )</h5>
+            <p>Логирование поступающих сообщений в объекте log
+                Задан массив сообщений и пустой объект log:
+                Далее, есть функция, отправляющая сообщения в случайном порядке в случайное время:
+                Обратите внимание, что эта функция получает при вызове не только текст сообщения, но и колбэк-функцию, которой нужно передать это сообщение
+                С помощью кода:
+                инициируем отправку сообщений
+                Ваша задача - напилить код функции handler, которая получает сообщение и заносит его в объект log в виде нового свойства, значение которого - текст поступившего сообщения, а ключ ( имя свойства ) - это время поступления сообщения ( в виде строки ) log
+                На случай, если два сообщения поступят одновременно, функция getKey добавляет "[0]", "[1]", "[2]"... к значению ключа ( иначе значения ключей могут дублироваться, что приведет к генерации исключения )</p>
+            <pre>
+                <code>
+                    let messages = [
+                        "backspace",
+                        "enter",
+                        "shift",
+                        "control",
+                        "delete",
+                        "space",
+                        "subtract"
+                    ]
+
+                    messages.getKey = () => {
+                        let key = new Date().toLocaleTimeString(), x = 0
+                        while ( log [ `${key}[${x}]` ] ) { x++ }
+                        return `${key}[${x}]`
+                    }
+
+                    var log = {}
+
+                    var sendMessage = (message, callback) =>
+                        setTimeout(
+                            () => callback(message),
+                        Math.random() * 7000
+                    )
+
+                    messages.forEach(
+                        message => sendMessage(message, handler)
+                    )
+
+                    function handler(message) {
+                        var key = messages.getKey()
+                            Object.defineProperty(log, key, {
+                                value: message
+                            }
+                        )
+                    }
+
+                    setTimeout (() => console.log(log), 2000)
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 2</h4>
+            <h5>Дополнительно ( 4 балла )</h5>
+            <p>Допилите код конструктора User, дополнив его акцессорами приватного свойства presence так, чтобы после выполнения скрипта:</p>
+            <pre>
+                <code>
+                    function User ( name ) {
+                        this.name = name
+                        var presence = false
+
+                        Object.defineProperty ( this, "presence", {
+                            get: () => !presence ? `${this.name} is absent` : `${this.name} is present`,
+                            set: changePresence => presence = changePresence
+                        })
+                    }
+
+                    let user = new User ( "Ivan" )
+                    console.info ( user.presence )
+
+                    user.presence = "+"
+                    console.info ( user.presence )
+                </code>
+            </pre>
+        </section>
+        <section>
+            <h4>Задание 3</h4>
+            <h5>Дополнительно ( 5 баллов )</h5>
+            <p>Объявить функцию-конструктор User
+                Конструктор должен принимать аргументы, описывающие юзера
+                Статические свойства и методы конструктора
+                У конструктора должны быть следующие :warning: не наследуемые экземплярами свойства и методы: массив</p>
+            <pre>
+                <code>
+                    var User = function (name, email, photo) {
+                        this.name = name || `no name`
+                        this.email = email || `no emeil`
+                        this.photoURL = photo || User.getAvatar()
+                    }
+
+                    User.avatars = [
+                        "https://pre00.deviantart.net/50f9/th/pre/i/2011/217/e/8/pikachu_2_by_nostalgiaattack-d45jd3i.png",
+                        "https://cdn.diversityavatars.com/wp-content/uploads/2018/01/Vector-Smart-Object-5.png",
+                        "https://cdn4.iconfinder.com/data/icons/user-avatar-flat-icons/512/User_Avatar-31-512.png",
+                        "http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-L3-icon.png",
+                        "https://findicons.com/files/icons/1072/face_avatars/300/i05.png",
+                        "http://www.iconarchive.com/download/i51043/hopstarter/halloween-avatars/Gomez.ico",
+                        "http://icons.iconarchive.com/icons/hopstarter/halloween-avatars/256/Zombie-2-icon.png",
+                        "https://vignette.wikia.nocookie.net/yogscast/images/8/8a/Avatar_Turps_2015.jpg"
+                    ]
+
+                    User.admin = {
+                        photoURL: "https://i.pinimg.com/originals/3d/47/4f/3d474f82ff71595e8081f9a120892ae8.gif",
+                        name: "admin"
+                    }
+
+                    User.getAvatar = function () {
+                        return this.avatars.shift()
+                    }
+
+                    User.prototype.messageBox = ( function () {
+                        var chat = document.createElement ( 'div' )
+                        document.body.appendChild ( chat )
+                        chat.style = `
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 40%;
+                            min-height: 100px;
+                            border: 2px solid grey;
+                            border-radius: 5px;
+                            padding: 25px 5px;
+                            background-color: blue;
+                        `
+                        chat.picture = chat.appendChild ( document.createElement ( 'img' ) )
+                        chat.picture.style.width = "50px"
+                        chat.name = chat.appendChild ( document.createElement ( 'span' ) )
+                        chat.name.style = "font-weight: bold; color: yellow; padding-left: 10px;"
+                        chat.message = chat.appendChild ( document.createElement ( 'textarea' ) )
+                        chat.message.placeholder = "Enter the text"
+                        chat.message.oninput = function ( event ) {
+                            event.target.parentNode.querySelector ( 'img' ).src = User.admin.photoURL
+                            event.target.parentNode.querySelector ( 'span' ).innerHTML = User.admin.name
+                        }
+                        chat.message.style = "width: 100%; height: 100%; border-radius: 5px;"
+                        return chat
+                    })()
+
+                    User.prototype.write = function ( text ) {
+                        this.messageBox.picture.src = this.photoURL
+                        this.messageBox.name.innerHTML = this.name
+                        this.messageBox.message.value = text
+                    }
+
+                    User.prototype.read = function () {
+                        this.messageBox.picture.src = this.photoURL
+                        this.messageBox.name.innerHTML = this.name
+                        this.info = this.messageBox.message.value
+                        this.messageBox.message.value = "OK"
+                    }
+
+                    var users = [
+                        new User ( "Иван" ),
+                        new User ( 'Alex', "alex@gmail.com" ),
+                        new User ( 'Bob', "bob777@gmail.com" ),
+                        new User ( 'Dima', "dima888@gmail.com" ),
+                        new User ( 'Fima', "fima999@gmail.com" )
+                    ]
+
+                    var k = 1
+                    users.forEach (
+                        function ( user ) {
+                            setTimeout (
+                                function () {
+                                    user.write ( `Hello, I'm ${user.name}` )
+                                }, 3000 * k++
+                            )
+                        }
+                    )
+                </code>
+            </pre>
+        </section>
+    </main>
+</body>
+</html>
